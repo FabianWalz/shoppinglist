@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  mongo:
+    image: mongo:4.4.3
+    container_name: shoppinglist-mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=shopping
+      - MONGO_INITDB_ROOT_PASSWORD=shopping
+      - MONGO_INITDB_DATABASE=shoppinglist
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./database/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+  backend:
+    build: ./backend
+    container_name: shoppinglist-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://shopping:shopping@mongo:27017/shoppinglist?authSource=admin
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./frontend
+    container_name: shoppinglist-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:

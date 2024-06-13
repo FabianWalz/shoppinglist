@@ -1,0 +1,4 @@
+com\example\shoppinglist\repository\ItemRepository.class
+com\example\shoppinglist\ShoppingListApplication.class
+com\example\shoppinglist\controller\ItemController.class
+com\example\shoppinglist\model\Item.class
